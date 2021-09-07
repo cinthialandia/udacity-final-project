@@ -13,6 +13,7 @@ const App = () => {
     isAuthenticated,
     loginWithRedirect,
     getAccessTokenSilently,
+    user,
   } = useAuth0();
 
   React.useEffect(() => {
@@ -30,6 +31,7 @@ const App = () => {
       const token = await getAccessTokenSilently();
 
       console.log(token);
+      console.log(user);
     };
 
     getToken();
