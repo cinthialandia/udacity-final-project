@@ -1,0 +1,43 @@
+frameworkVersion: "2"
+
+org: cinthialandia
+app: udacity-final-project
+service: udacity-final-project-backend
+
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+  - serverless-plugin-tracing
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: "20201221"
+
+  # https://www.serverless.com/framework/docs/deprecations/#PARAMETERIZED_ARGUMENT
+  # You may override values in serverless.yml for stage and region with command line arguments --stage and --region
+  stage: "dev"
+  region: "us-east-1"
+
+  tracing:
+    lambda: true
+    apiGateway: true
+
+  logs:
+    # Enable API Gateway logs
+    restApi: true
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - xray:PutTelemetryRecords
+        - xray:PutTraceSegments
+      Resource: "*"
+
+functions:
+  hello:
+    handler: src/lambda/hello.handler
+    events:
+      - http:
+          path: /
+          method: get
