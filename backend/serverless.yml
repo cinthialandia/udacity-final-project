@@ -35,9 +35,26 @@ provider:
       Resource: "*"
 
 functions:
-  hello:
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+
+  Hello:
     handler: src/lambda/hello.handler
     events:
       - http:
           path: /
           method: get
+          cors: true
+          authorizer: Auth
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"

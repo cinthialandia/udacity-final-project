@@ -4,6 +4,8 @@
   "author": "Cinthia Valero",
   "dependencies": {
     "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.4",
     "middy": "^0.36.0",
     "source-map-support": "^0.5.19",
     "uuid": "^8.3.2",
@@ -11,6 +13,8 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.83",
+    "@types/http-errors": "^1.8.1",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.7.13",
     "aws-sdk": "^2.983.0",
     "serverless-aws-documentation": "^1.1.0",

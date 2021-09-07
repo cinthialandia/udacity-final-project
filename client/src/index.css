@@ -1,13 +1,14 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #8f95e3;
+  padding: 30px;
+  font-family: "Quicksand";
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* This query was necessary for changing the size of the elements on mobile cellphone*/
+@media only screen and (max-width: 800px) {
+  /*welcome section media query*/
+
+  body {
+    padding: 5px;
+  }
 }
