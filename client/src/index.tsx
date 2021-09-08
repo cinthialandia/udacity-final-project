@@ -4,6 +4,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 import "./index.css";
+import "./i18n";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 

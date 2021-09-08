@@ -39,7 +39,7 @@ const App = () => {
 
   return (
     <Paper className="app-container" elevation={10}>
-      {!isAuthenticated ? <Loading /> : <Home />}
+      {isAuthenticated && user ? <Home user={user} /> : <Loading />}
     </Paper>
   );
 };
