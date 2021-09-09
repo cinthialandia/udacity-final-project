@@ -1,6 +1,5 @@
 import React from "react";
 import { format } from "date-fns";
-import { User } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
 
 import "./Home.css";
@@ -8,11 +7,7 @@ import Datepicker from "../components/Datepicker";
 import Nav from "../components/Nav";
 import Loading from "../components/Loading";
 
-interface HomeProps {
-  user: User;
-}
-
-const Home: React.FC<HomeProps> = ({ user }) => {
+const Home: React.FC = () => {
   const [date, setDate] = React.useState(format(new Date(), "yyyy-MM-dd"));
   const { t, ready } = useTranslation("", { useSuspense: false });
 

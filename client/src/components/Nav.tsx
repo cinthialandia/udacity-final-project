@@ -5,10 +5,14 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Avatar from "@material-ui/core/Avatar";
+
 import "./Nav.css";
 
+import { useAppSelector } from "../store";
+
 const Nav = () => {
-  const { user, logout } = useAuth0();
+  const { user } = useAppSelector((state) => state.user);
+  const { logout } = useAuth0();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const menuButtonRef = React.useRef<HTMLButtonElement>(null);
   const handleLogoutClick = () => logout({ returnTo: window.location.origin });
