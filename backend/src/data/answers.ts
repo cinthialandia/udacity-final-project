@@ -3,11 +3,11 @@ import * as AWS from "aws-sdk";
 import { AnswerList } from "../models/answers";
 import { createLogger } from "../utils/logger";
 
-const logger = createLogger("todos");
+const logger = createLogger("data:answers");
 const answersTable = process.env.ANSWERS_TABLE;
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-export const getAnswers = async (
+const getAnswers = async (
   userId: string,
   questionId: string
 ): Promise<AnswerList> => {
@@ -27,4 +27,8 @@ export const getAnswers = async (
     result;
 
   return result.Item as AnswerList;
+};
+
+export const Answers = {
+  get: getAnswers,
 };
