@@ -1,16 +1,21 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  createStore,
+  applyMiddleware,
+} from "@reduxjs/toolkit";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
+import createSagaMiddleware from "redux-saga";
 
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+const rootReducer = combineReducers({
+  user: () => ({}),
 });
+
+const sagaMiddleware = createSagaMiddleware();
+
+export const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;

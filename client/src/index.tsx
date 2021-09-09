@@ -1,42 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Auth0Provider } from "@auth0/auth0-react";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
+import { StoreProvider } from "./context/store";
+import { ThemeProvider } from "./context/theme";
+import { AuthProvider } from "./context/auth";
 
 import "./index.css";
-import "./i18n";
+import "./context/i18n";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#fca82e",
-    },
-    secondary: {
-      main: "#e678a7",
-    },
-  },
-  typography: {
-    button: {
-      color: "#fff",
-    },
-  },
-});
-
 ReactDOM.render(
   <React.StrictMode>
-    <Auth0Provider
-      domain="dev-wvaee-nh.us.auth0.com"
-      clientId="yRKmrm8XmrSPFlvT2bzM5sIzEnFzM5XR"
-      redirectUri={window.location.origin}
-      audience="https://dev-wvaee-nh.us.auth0.com/api/v2/"
-      scope="read:current_user update:current_user_metadata"
-    >
-      <ThemeProvider theme={theme}>
-        <App />
+    <StoreProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ThemeProvider>
-    </Auth0Provider>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
