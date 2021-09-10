@@ -1,35 +1,34 @@
 import React from "react";
-import { addDays, subDays, format } from "date-fns";
+import { addDays, subDays } from "date-fns";
 import Button from "@material-ui/core/Button";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import TextField from "@material-ui/core/TextField";
 
 import "./Datepicker.css";
+import { useAppDispatch, useAppSelector } from "../store";
 
-interface DatepickerProps {
-  date: string;
-  setDate: (date: string) => void;
-}
-
-const Datepicker: React.FC<DatepickerProps> = ({ date, setDate }) => {
-  const handleDateChange = (date: Date) => {
-    const dateAsString = format(date, "yyyy-MM-dd");
-    setDate(dateAsString);
-  };
+const Datepicker: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const date = useAppSelector((state) => state.date);
 
   const handleInput = (e: any) => {
-    handleDateChange(e.target.valueAsDate);
+    dispatch({
+      type: "DATE_UPDATED",
+      payload: {
+        date: e.target.valueAsDate,
+      },
+    });
   };
 
   const handleClickPrev = () => {
     const subDate = subDays(new Date(date), 1);
-    handleDateChange(subDate);
+    dispatch({ type: "DATE_UPDATED", payload: { date: subDate } });
   };
 
   const handleClickNext = () => {
     const addDate = addDays(new Date(date), 1);
-    handleDateChange(addDate);
+    dispatch({ type: "DATE_UPDATED", payload: { date: addDate } });
   };
 
   return (

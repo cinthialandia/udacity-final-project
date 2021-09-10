@@ -9,13 +9,17 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { all } from "redux-saga/effects";
 
 import { userReducers, userSagas } from "./slices/user";
+import { dateReducers, dateSagas } from "./slices/date";
+import { answersReducers, answersSagas } from "./slices/answers";
 
 const rootReducer = combineReducers({
   user: userReducers,
+  date: dateReducers,
+  answers: answersReducers,
 });
 
 function* rootSaga() {
-  yield all([userSagas()]);
+  yield all([userSagas(), dateSagas(), answersSagas()]);
 }
 
 const sagaMiddleware = createSagaMiddleware();

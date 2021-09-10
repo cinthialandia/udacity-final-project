@@ -32,7 +32,7 @@ interface USER_LOGOUT extends Action {
   type: "USER_LOGOUT";
 }
 
-type UserActions = USER_ATTEMPT_LOGIN | USER_LOGGED_IN | USER_LOGOUT;
+export type UserActions = USER_ATTEMPT_LOGIN | USER_LOGGED_IN | USER_LOGOUT;
 
 type UserReducer = Reducer<UserState, UserActions>;
 
