@@ -8,7 +8,13 @@ import Home from "./pages/Home";
 import "./App.css";
 
 const App = () => {
+  // const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.user);
+
+  // TODO: use once the login infinite loop is fixed
+  // useEffect(() => {
+  //   dispatch({ type: "USER_ATTEMPT_LOGIN" });
+  // }, [dispatch]);
 
   return (
     <Paper className="app-container" elevation={10}>

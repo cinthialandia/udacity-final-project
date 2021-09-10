@@ -15,6 +15,7 @@ ReactDOM.render(
   <React.StrictMode>
     <StoreProvider>
       <ThemeProvider>
+        {/* TODO: remove once the login infinite loop is fixed */}
         <AuthProvider>
           <App />
         </AuthProvider>
