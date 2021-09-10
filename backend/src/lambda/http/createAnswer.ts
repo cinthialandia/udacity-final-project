@@ -6,14 +6,14 @@ import { cors } from "middy/middlewares";
 
 import { getUserId } from "../utils";
 import { createAnswer } from "../../controllers/answers";
-import { CreateAnswer } from "../../types";
+import { CreatingAnswer } from "../../types";
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const userId = getUserId(event);
-    const newAnswer: CreateAnswer = JSON.parse(event.body);
+    const creatingAnswer: CreatingAnswer = JSON.parse(event.body);
 
-    return createAnswer(userId, newAnswer);
+    return createAnswer(userId, creatingAnswer);
   }
 );
 

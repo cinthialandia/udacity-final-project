@@ -11,8 +11,13 @@ export interface Answers {
 
 export type AnswerEntry = Answers["answers"][string];
 
-export interface CreateAnswer {
+export interface CreatingAnswer {
   answer: AnswerEntry;
   questionId: string;
+  year: number;
+}
+
+export interface UpdatingAnswer {
+  answer: AnswerEntry;
   year: number;
 }

@@ -1,6 +1,6 @@
 import * as AWS from "aws-sdk";
 
-import { CreateAnswer, Answers as IAnswers } from "../types";
+import { Answers as IAnswers } from "../types";
 import { createLogger } from "../utils/logger";
 
 const logger = createLogger("data:answers");
@@ -31,60 +31,48 @@ const getAnswers = async (
   return result.Item as IAnswers;
 };
 
-const createAnswers = async (
-  userId: string,
-  newAnswer: CreateAnswer
-): Promise<IAnswers> => {
-  logger.info(`Creating answer ${newAnswer} for user ${userId}`);
+const createAnswers = async (newAnswers: IAnswers): Promise<void> => {
+  logger.info(
+    `Creating answers for question ${newAnswers.questionId} and user ${newAnswers.userId}`
+  );
 
-  const answersToCreate: IAnswers = {
-    userId,
-    questionId: newAnswer.questionId,
-    answers: {
-      [String(newAnswer.year)]: newAnswer.answer,
-    },
-  };
   await docClient
     .put({
       TableName: answersTable,
-      Item: answersToCreate,
+      Item: newAnswers,
     })
     .promise();
 
-  logger.info(`Created answer ${newAnswer} for user ${userId}`);
-
-  return answersToCreate;
+  logger.info(
+    `Creating answers for question ${newAnswers.questionId} and user ${newAnswers.userId}`
+  );
 };
 
-const updateAnswers = async (
-  userId: string,
-  newAnswer: CreateAnswer
-): Promise<IAnswers> => {
-  logger.info(`Updating answer ${newAnswer} for user ${userId}`);
+const updateAnswers = async (updatedAnswers: IAnswers): Promise<void> => {
+  logger.info(
+    `Updating answers for question ${updatedAnswers.questionId} and user ${updatedAnswers.userId}`,
+    updatedAnswers
+  );
 
-  const updateResponse = await docClient
+  await docClient
     .update({
       TableName: answersTable,
       Key: {
-        userId,
-        questionId: newAnswer.questionId,
+        userId: updatedAnswers.userId,
+        questionId: updatedAnswers.questionId,
       },
-      UpdateExpression: "SET answers.#year = :answer",
-      ExpressionAttributeNames: {
-        "#year": String(newAnswer.year),
-      },
+      UpdateExpression: "SET answers = :answers",
       ExpressionAttributeValues: {
-        ":answer": {
-          ...newAnswer.answer,
+        ":answers": {
+          ...updatedAnswers.answers,
         },
       },
-      ReturnValues: "ALL_NEW",
     })
     .promise();
 
-  logger.info(`Updated answer ${newAnswer} for user ${userId}`);
-
-  return updateResponse.Attributes as IAnswers;
+  logger.info(
+    `Updating answers for question ${updatedAnswers.questionId} and user ${updatedAnswers.userId}`
+  );
 };
 
 export const Answers = {
