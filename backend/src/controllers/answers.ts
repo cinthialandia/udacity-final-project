@@ -3,7 +3,7 @@ import "source-map-support/register";
 import { createLogger } from "../utils/logger";
 import { Answers } from "../data/answers";
 import { CreatingAnswer, Answers as IAnswers, UpdatingAnswer } from "../types";
-import { getAttachmentPresignedUrl } from "./attachment";
+import { getAttachmentPresignedUrl } from "../utils/attachment";
 
 const logger = createLogger("controller:answers");
 
@@ -110,7 +110,10 @@ export const updateAnswer = async (
       ...currentAnswers,
       answers: {
         ...currentAnswers.answers,
-        [updatingAnswer.year]: updatingAnswer.answer,
+        [updatingAnswer.year]: {
+          ...currentAnswers.answers[updatingAnswer.year],
+          value: updatingAnswer.answer.value,
+        },
       },
     };
 
@@ -176,6 +179,74 @@ export const deleteAnswer = async (
       statusCode: 201,
       body: JSON.stringify({
         ...resultedAnsers,
+      }),
+    };
+  } catch (error) {
+    logger.error(error.message);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "internal error",
+      }),
+    };
+  }
+};
+
+export const generateAttachmentUrl = async (
+  userId: string,
+  questionId: string,
+  year: string
+) => {
+  logger.info(
+    `Generating attachment url for answer year ${year} of question ${questionId} and user ${userId}`
+  );
+
+  try {
+    const currentAnswers = await Answers.get(userId, questionId);
+
+    if (!currentAnswers) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          message: `There are no answers for question ${questionId}`,
+        }),
+      };
+    }
+
+    const pictureUrl = await getAttachmentPresignedUrl(
+      userId,
+      questionId,
+      year
+    );
+
+    const resultedAnswers: IAnswers = {
+      ...currentAnswers,
+      answers: {
+        ...currentAnswers.answers,
+        [year]: {
+          ...currentAnswers.answers[year],
+          pictureUrl,
+        },
+      },
+    };
+
+    logger.info(
+      `Updated attachment url for answer year ${year} of question ${questionId} and user ${userId}`,
+      resultedAnswers
+    );
+
+    await Answers.update(resultedAnswers);
+
+    logger.info(
+      `Generated attachment url for answer year ${year} of question ${questionId} and user ${userId}`,
+      pictureUrl
+    );
+
+    return {
+      statusCode: 201,
+      body: JSON.stringify({
+        url: pictureUrl,
       }),
     };
   } catch (error) {

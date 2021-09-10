@@ -12,12 +12,16 @@ export interface Answers {
 export type AnswerEntry = Answers["answers"][string];
 
 export interface CreatingAnswer {
-  answer: AnswerEntry;
+  answer: {
+    value: string;
+  };
   questionId: string;
   year: number;
 }
 
 export interface UpdatingAnswer {
-  answer: AnswerEntry;
+  answer: {
+    value: string;
+  };
   year: number;
 }
