@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import * as middy from "middy";
 import { cors } from "middy/middlewares";
 
-import { getUserId } from "../utils";
+import { getUserId } from "../../utils/getUserId";
 import { deleteAnswer } from "../../controllers/answers";
 
 export const handler = middy(
@@ -13,7 +13,7 @@ export const handler = middy(
     const questionId = event.pathParameters.questionId;
     const year = event.pathParameters.year;
 
-    return deleteAnswer(userId, questionId, year);
+    return deleteAnswer(userId, questionId, String(year));
   }
 );
 

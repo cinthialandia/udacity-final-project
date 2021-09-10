@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import * as middy from "middy";
 import { cors } from "middy/middlewares";
 
-import { getUserId } from "../utils";
+import { getUserId } from "../../utils/getUserId";
 import { createAnswer } from "../../controllers/answers";
 import { CreatingAnswer } from "../../types";
 
