@@ -7,9 +7,15 @@ import { AnswersActions } from "./answers";
 
 /** INITIAL STATE */
 /** ------------ */
-type DateState = string;
+type DateState = {
+  dateSelected: string;
+  currentYear: number;
+};
 
-const INITIAL_STATE: DateState = format(new Date(), "yyyy-MM-dd");
+const INITIAL_STATE: DateState = {
+  dateSelected: format(new Date(), "yyyy-MM-dd"),
+  currentYear: new Date().getFullYear(),
+};
 
 /** ACTION TYPES */
 /** ----------- */
@@ -33,12 +39,14 @@ const dateUpdatedReducer: DateReducer = (state = INITIAL_STATE, action) => {
 
   const newDate = format(action.payload.date, "yyyy-MM-dd");
 
-  return newDate;
+  return {
+    ...state,
+    dateSelected: newDate,
+  };
 };
 
 /** SAGAS */
 /** ----- */
-
 function* dateUpdatedSaga(action: DateActions) {
   yield put<AnswersActions>({
     type: "ANSWERS_DATE_CHANGED",

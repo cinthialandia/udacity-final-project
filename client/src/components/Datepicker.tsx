@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../store";
 
 const Datepicker: React.FC = () => {
   const dispatch = useAppDispatch();
-  const date = useAppSelector((state) => state.date);
+  const dateSelected = useAppSelector((state) => state.date.dateSelected);
 
   const handleInput = (e: any) => {
     dispatch({
@@ -22,12 +22,12 @@ const Datepicker: React.FC = () => {
   };
 
   const handleClickPrev = () => {
-    const subDate = subDays(new Date(date), 1);
+    const subDate = subDays(new Date(dateSelected), 1);
     dispatch({ type: "DATE_UPDATED", payload: { date: subDate } });
   };
 
   const handleClickNext = () => {
-    const addDate = addDays(new Date(date), 1);
+    const addDate = addDays(new Date(dateSelected), 1);
     dispatch({ type: "DATE_UPDATED", payload: { date: addDate } });
   };
 
@@ -36,7 +36,7 @@ const Datepicker: React.FC = () => {
       <Button color="primary" onClick={handleClickPrev}>
         <ArrowLeftIcon></ArrowLeftIcon>
       </Button>
-      <TextField type="date" value={date} onChange={handleInput} />
+      <TextField type="date" value={dateSelected} onChange={handleInput} />
       <Button color="primary" onClick={handleClickNext}>
         <ArrowRightIcon></ArrowRightIcon>
       </Button>
