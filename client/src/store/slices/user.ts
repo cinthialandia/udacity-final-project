@@ -4,11 +4,15 @@ import { takeEvery, call, put } from "redux-saga/effects";
 import { auth0Client, User } from "../utils/auth0";
 import { reduceReducers } from "../utils/reduceReducer";
 
+/** INITIAL STATE */
+/** ------------ */
 interface UserState {
   isLoading: boolean;
   user?: User;
   token?: string;
 }
+
+const INITIAL_STATE: UserState = { isLoading: true };
 
 /** ACTION TYPES */
 /** ----------- */
@@ -30,14 +34,7 @@ interface USER_LOGOUT extends Action {
 
 type UserActions = USER_ATTEMPT_LOGIN | USER_LOGGED_IN | USER_LOGOUT;
 
-type UserActionTypes = UserActions["type"];
-
 type UserReducer = Reducer<UserState, UserActions>;
-
-/** INITIAL STATE */
-/** ------------ */
-
-const INITIAL_STATE: UserState = { isLoading: true };
 
 /** REDUCERS */
 /** -------- */
@@ -55,8 +52,15 @@ const userLoggedInReducer: UserReducer = (state = INITIAL_STATE, action) => {
 
 /** SAGAS */
 /** ----- */
-// TODO: fix this saga. it causes an infinite loop when logging in
+// discovered how to properly handle the redirect callback in:
+// https://gist.github.com/klequis/fd9c3cf5b025cc26a282ea30ef8ff6da#file-react-auth0-spa-js-L41-L64
 function* userAttemptLoginSaga() {
+  // Handle redirect callback if code is present in the URL
+  if (window.location.search.includes("code=")) {
+    yield call(auth0Client.handleRedirectCallback.bind(auth0Client));
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   const authenticated: Boolean = yield call(
     auth0Client.isAuthenticated.bind(auth0Client)
   );
@@ -87,7 +91,7 @@ function* userLogoutSaga() {
 export const userReducers = reduceReducers(INITIAL_STATE, userLoggedInReducer);
 
 export function* userSagas() {
-  yield takeEvery<UserActionTypes>("USER_ATTEMPT_LOGIN", userAttemptLoginSaga);
+  yield takeEvery<UserActions>("USER_ATTEMPT_LOGIN", userAttemptLoginSaga);
 
-  yield takeEvery<UserActionTypes>("USER_LOGOUT", userLogoutSaga);
+  yield takeEvery<UserActions>("USER_LOGOUT", userLogoutSaga);
 }

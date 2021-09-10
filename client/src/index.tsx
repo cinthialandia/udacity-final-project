@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 
 import { StoreProvider } from "./context/store";
 import { ThemeProvider } from "./context/theme";
-import { AuthProvider } from "./context/auth";
 
 import "./index.css";
 import "./context/i18n";
@@ -15,10 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <StoreProvider>
       <ThemeProvider>
-        {/* TODO: remove once the login infinite loop is fixed */}
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        <App />
       </ThemeProvider>
     </StoreProvider>
   </React.StrictMode>,

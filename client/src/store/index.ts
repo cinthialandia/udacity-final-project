@@ -8,17 +8,14 @@ import createSagaMiddleware from "redux-saga";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { all } from "redux-saga/effects";
 
-import { userReducers } from "./slices/user";
+import { userReducers, userSagas } from "./slices/user";
 
 const rootReducer = combineReducers({
   user: userReducers,
 });
 
 function* rootSaga() {
-  yield all([
-    // TODO: use once the login infinite loop is fixed
-    // userSagas()
-  ]);
+  yield all([userSagas()]);
 }
 
 const sagaMiddleware = createSagaMiddleware();

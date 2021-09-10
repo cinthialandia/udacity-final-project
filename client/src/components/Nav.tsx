@@ -4,22 +4,18 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Avatar from "@material-ui/core/Avatar";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import "./Nav.css";
 
-import { useAppSelector } from "../store";
+import { useAppSelector, useAppDispatch } from "../store";
 
 const Nav = () => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const { logout } = useAuth0();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const menuButtonRef = React.useRef<HTMLButtonElement>(null);
 
-  // TODO: use once login inifinite loop is resolved
-  // const handleLogoutClick = () => dispatch({ type: "USER_LOGOUT" });
-  const handleLogoutClick = () => logout();
+  const handleLogoutClick = () => dispatch({ type: "USER_LOGOUT" });
 
   return (
     <div>
