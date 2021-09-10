@@ -12,7 +12,7 @@ import { UserActions } from "./user";
 type AnswersState = {
   isLoading: boolean;
   questionId: string;
-  answers?: Answers;
+  answers?: Answers["answers"];
 };
 
 const INITIAL_STATE: AnswersState = {
@@ -92,7 +92,7 @@ const answersLoadedReducer: AnswersReducer = (
 
   return {
     ...state,
-    answers: action.payload.answers,
+    answers: action.payload.answers.answers,
     isLoading: false,
   };
 };
