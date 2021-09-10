@@ -1,14 +1,18 @@
 import { Reducer, Action } from "@reduxjs/toolkit";
-import { takeEvery, put } from "redux-saga/effects";
-import { getQuestionId } from "../utils/getQuestionId";
+import { takeEvery, put, call, select } from "redux-saga/effects";
 
+import { Answers } from "../../types";
+import { getAnswers } from "../utils/api";
+import { getQuestionId } from "../utils/getQuestionId";
 import { reduceReducers } from "../utils/reduceReducer";
+import { UserActions } from "./user";
 
 /** INITIAL STATE */
 /** ------------ */
 type AnswersState = {
   isLoading: boolean;
   questionId: string;
+  answers?: Answers;
 };
 
 const INITIAL_STATE: AnswersState = {
@@ -34,15 +38,20 @@ interface ANSWERS_QUESTION_CHANGED extends Action {
 
 interface ANSWERS_FETCH extends Action {
   type: "ANSWERS_FETCH";
+}
+
+interface ANSWERS_LOADED extends Action {
+  type: "ANSWERS_LOADED";
   payload: {
-    questionId: string;
+    answers: Answers;
   };
 }
 
 export type AnswersActions =
   | ANSWERS_DATE_CHANGED
   | ANSWERS_QUESTION_CHANGED
-  | ANSWERS_FETCH;
+  | ANSWERS_FETCH
+  | ANSWERS_LOADED;
 
 type AnswersReducer = Reducer<AnswersState, AnswersActions>;
 
@@ -59,6 +68,32 @@ const answersQuestionChangedReducer: AnswersReducer = (
   return {
     ...state,
     questionId: action.payload.questionId,
+  };
+};
+
+const answersFetchReducer: AnswersReducer = (state = INITIAL_STATE, action) => {
+  if (action.type !== "ANSWERS_FETCH") {
+    return state;
+  }
+
+  return {
+    ...state,
+    isLoading: true,
+  };
+};
+
+const answersLoadedReducer: AnswersReducer = (
+  state = INITIAL_STATE,
+  action
+) => {
+  if (action.type !== "ANSWERS_LOADED") {
+    return state;
+  }
+
+  return {
+    ...state,
+    answers: action.payload.answers,
+    isLoading: false,
   };
 };
 
@@ -80,32 +115,33 @@ function* answersDateChangedSaga(action: AnswersActions) {
 
   yield put<AnswersActions>({
     type: "ANSWERS_FETCH",
-    payload: {
-      questionId: newQuestionId,
-    },
   });
 }
 
-function* answersFetch(action: AnswersActions) {
-  if (action.type !== "ANSWERS_FETCH") {
-    return;
+function* answersFetchSaga() {
+  const questionId: string = yield select(
+    (state: { answers: AnswersState }) => state.answers.questionId
+  );
+
+  try {
+    const answers: Answers = yield call(getAnswers, questionId);
+
+    yield put<AnswersActions>({
+      type: "ANSWERS_LOADED",
+      payload: { answers },
+    });
+  } catch (error) {
+    console.error(error);
   }
-
-  yield;
-
-  // const answers: Answers = yield call(
-  //   fetch,
-  //   `https://eekguocox7.execute-api.us-east-1.amazonaws.com/answers/${action.payload.questionId}`
-  // );
-
-  // console.log(answers);
 }
 
 /** EXPORTS */
 /** ------ */
 export const answersReducers = reduceReducers(
   INITIAL_STATE,
-  answersQuestionChangedReducer
+  answersQuestionChangedReducer,
+  answersFetchReducer,
+  answersLoadedReducer
 );
 
 export function* answersSagas() {
@@ -114,5 +150,7 @@ export function* answersSagas() {
     answersDateChangedSaga
   );
 
-  yield takeEvery<AnswersActions>("ANSWERS_FETCH", answersFetch);
+  yield takeEvery<AnswersActions>("ANSWERS_FETCH", answersFetchSaga);
+
+  yield takeEvery<UserActions>("USER_LOGGED_IN", answersFetchSaga);
 }

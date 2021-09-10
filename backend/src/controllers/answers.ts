@@ -14,7 +14,7 @@ export const getAnswers = async (userId: string, questionId: string) => {
     return {
       statusCode: 201,
       body: JSON.stringify({
-        answers,
+        ...answers,
       }),
     };
   } catch (error) {
@@ -23,7 +23,7 @@ export const getAnswers = async (userId: string, questionId: string) => {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        messagE: "internal error",
+        message: "internal error",
       }),
     };
   }
