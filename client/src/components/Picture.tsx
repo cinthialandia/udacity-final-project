@@ -57,21 +57,21 @@ export const Picture: React.FC<PictureProps> = ({
     });
   };
 
-  if (imageLoading) {
-    return (
-      <div className="picture-container">
-        <PictureLoading />
-      </div>
-    );
-  }
-
   return (
     <div className="picture-container">
       {!allowEdit ? (
-        <img className="picture" src={src} alt={answer?.value || "no image"} />
+        imageLoading ? (
+          <PictureLoading />
+        ) : (
+          <img
+            className="picture"
+            src={src}
+            alt={answer?.value || "no image"}
+          />
+        )
       ) : (
         <>
-          {isUploading ? (
+          {isUploading || imageLoading ? (
             <PictureLoading />
           ) : (
             <img
