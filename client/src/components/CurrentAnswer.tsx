@@ -70,7 +70,12 @@ const CurrentAnswer: React.FC<CurrentAnswerProps> = ({
 
       {!isEditing ? (
         <div className="current-answer-image">
-          <Picture answer={answer} />
+          <Picture
+            answer={answer}
+            questionId={questionId}
+            year={year}
+            allowEdit
+          />
         </div>
       ) : null}
     </div>

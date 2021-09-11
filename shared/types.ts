@@ -25,3 +25,8 @@ export interface UpdatingAnswer {
   };
   year: number;
 }
+
+export interface AttachmentResponse {
+  answers: Answers;
+  url: string;
+}

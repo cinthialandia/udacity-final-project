@@ -1,6 +1,9 @@
 .picture-container {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
 }
 
 .picture-loading {
@@ -13,4 +16,14 @@
 .picture {
   max-height: 200px;
   max-width: 90%;
+}
+
+.picture-upload-input {
+  display: none;
+}
+
+.picture-upload-label {
+  color: #e678a7;
+  cursor: pointer;
+  font-weight: bolder;
 }

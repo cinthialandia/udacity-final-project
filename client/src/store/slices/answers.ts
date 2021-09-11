@@ -2,7 +2,12 @@ import { Reducer, Action } from "@reduxjs/toolkit";
 import { takeEvery, put, call, select } from "redux-saga/effects";
 
 import { Answers } from "../../types";
-import { createAnswers, getAnswers, updateAnswers } from "../utils/api";
+import {
+  createAnswers,
+  getAnswers,
+  updateAnswers,
+  uploadPicutre,
+} from "../utils/api";
 import { getQuestionId } from "../utils/getQuestionId";
 import { reduceReducers } from "../utils/reduceReducer";
 import { DateState } from "./date";
@@ -14,6 +19,7 @@ type AnswersState = {
   isLoading: boolean;
   isSaving: boolean;
   isEditing: boolean;
+  isUploading: boolean;
   questionId: string;
   answers?: Answers["answers"];
 };
@@ -22,6 +28,7 @@ const INITIAL_STATE: AnswersState = {
   isLoading: true,
   isSaving: false,
   isEditing: false,
+  isUploading: false,
   questionId: getQuestionId(new Date()),
 };
 
@@ -76,6 +83,22 @@ interface ANSWERS_SAVED extends Action {
   };
 }
 
+interface ANSWERS_UPLOADING_PICTURE extends Action {
+  type: "ANSWERS_UPLOADING_PICTURE";
+  payload: {
+    file: File;
+    questionId: string;
+    year: number;
+  };
+}
+
+interface ANSWERS_UPLOADED_PICTURE extends Action {
+  type: "ANSWERS_UPLOADED_PICTURE";
+  payload: {
+    answers: Answers;
+  };
+}
+
 export type AnswersActions =
   | ANSWERS_DATE_CHANGED
   | ANSWERS_QUESTION_CHANGED
@@ -84,7 +107,9 @@ export type AnswersActions =
   | ANSWERS_EDITING
   | ANSWERS_EDITED
   | ANSWERS_SAVING
-  | ANSWERS_SAVED;
+  | ANSWERS_SAVED
+  | ANSWERS_UPLOADING_PICTURE
+  | ANSWERS_UPLOADED_PICTURE;
 
 type AnswersReducer = Reducer<AnswersState, AnswersActions>;
 
@@ -145,6 +170,7 @@ const answersEditingReducer: AnswersReducer = (
     isEditing: true,
   };
 };
+
 const answersEditedReducer: AnswersReducer = (
   state = INITIAL_STATE,
   action
@@ -184,6 +210,35 @@ const answersSavedReducer: AnswersReducer = (state = INITIAL_STATE, action) => {
     answers: action.payload.answers.answers,
     isEditing: false,
     isSaving: false,
+  };
+};
+
+const answersUploadingPictureReducer: AnswersReducer = (
+  state = INITIAL_STATE,
+  action
+) => {
+  if (action.type !== "ANSWERS_UPLOADING_PICTURE") {
+    return state;
+  }
+
+  return {
+    ...state,
+    isUploading: true,
+  };
+};
+
+const answersUploadedPictureReducer: AnswersReducer = (
+  state = INITIAL_STATE,
+  action
+) => {
+  if (action.type !== "ANSWERS_UPLOADED_PICTURE") {
+    return state;
+  }
+
+  return {
+    ...state,
+    isUploading: false,
+    answers: action.payload.answers["answers"],
   };
 };
 
@@ -274,6 +329,26 @@ function* answersSavingSaga(action: AnswersActions) {
   }
 }
 
+function* answersUploadingPictureSaga(action: AnswersActions) {
+  if (action.type !== "ANSWERS_UPLOADING_PICTURE") {
+    return;
+  }
+
+  const resultedAnswers: Answers = yield call(
+    uploadPicutre,
+    action.payload.questionId,
+    action.payload.year,
+    action.payload.file
+  );
+
+  yield put<AnswersActions>({
+    type: "ANSWERS_UPLOADED_PICTURE",
+    payload: {
+      answers: resultedAnswers,
+    },
+  });
+}
+
 /** EXPORTS */
 /** ------ */
 export const answersReducers = reduceReducers(
@@ -284,7 +359,9 @@ export const answersReducers = reduceReducers(
   answersEditingReducer,
   answersEditedReducer,
   answersSavingReducer,
-  answersSavedReducer
+  answersSavedReducer,
+  answersUploadingPictureReducer,
+  answersUploadedPictureReducer
 );
 
 export function* answersSagas() {
@@ -298,4 +375,9 @@ export function* answersSagas() {
   yield takeEvery<UserActions>("USER_LOGGED_IN", answersFetchSaga);
 
   yield takeEvery<AnswersActions>("ANSWERS_SAVING", answersSavingSaga);
+
+  yield takeEvery<AnswersActions>(
+    "ANSWERS_UPLOADING_PICTURE",
+    answersUploadingPictureSaga
+  );
 }

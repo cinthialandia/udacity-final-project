@@ -1,6 +1,6 @@
 import "source-map-support/register";
 
-import { Answers } from "../types";
+import { Answers, AttachmentResponse } from "../types";
 import { AnswersDB } from "../services/answers";
 import { AttachmentsS3 } from "../services/attachment";
 import { getPictureUrl } from "../utils/attachments";
@@ -64,7 +64,8 @@ export const generateAttachmentUrl = async (
       statusCode: 201,
       body: JSON.stringify({
         url: presignedBucketUrl,
-      }),
+        answers: resultedAnswers,
+      } as AttachmentResponse),
     };
   } catch (error) {
     logger.error(error.message);

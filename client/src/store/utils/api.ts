@@ -1,11 +1,12 @@
 import { UpdatingAnswer } from "../../../../shared/types";
-import { Answers, CreatingAnswer } from "../../types";
+import { Answers, CreatingAnswer, AttachmentResponse } from "../../types";
 import { store } from "../index";
 
 export const API_URL =
   "https://eekguocox7.execute-api.us-east-1.amazonaws.com/dev";
 
 const ANSWERS_API = `${API_URL}/answers`;
+const ATTACHMENT_URL_API = `${API_URL}/attachmentUrl`;
 
 const getHeaders = () => {
   const token = store.getState().user.token;
@@ -68,4 +69,29 @@ export const updateAnswers = async (
   const resultedAnswers: Answers = await response.json();
 
   return resultedAnswers;
+};
+
+export const uploadPicutre = async (
+  questionId: string,
+  year: number,
+  file: File
+): Promise<Answers> => {
+  const attachmentResponse = await fetch(
+    `${ATTACHMENT_URL_API}/${questionId}/${year}`,
+    {
+      headers: getHeaders(),
+    }
+  );
+
+  const attachmentInfo: AttachmentResponse = await attachmentResponse.json();
+
+  await fetch(attachmentInfo.url, {
+    method: "put",
+    headers: {
+      "Content-Type": file.type,
+    },
+    body: file,
+  });
+
+  return attachmentInfo.answers;
 };
