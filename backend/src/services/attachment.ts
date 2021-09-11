@@ -1,13 +1,15 @@
 import "source-map-support/register";
 
 import * as AWS from "aws-sdk";
+import * as AWSXRay from "aws-xray-sdk";
 
 import { getPictureObjectId } from "../utils/attachments";
 import { createLogger } from "../utils/logger";
 
 const logger = createLogger("service:attachment");
 
-const s3 = new AWS.S3({
+const XAWS = AWSXRay.captureAWS(AWS);
+const s3 = new XAWS.S3({
   signatureVersion: "v4",
 }) as AWS.S3;
 const s3Bucket = process.env.ATTACHMENT_S3_BUCKET;

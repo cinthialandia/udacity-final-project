@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "author": "Cinthia Valero",
   "dependencies": {
+    "aws-xray-sdk": "^3.3.3",
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.4",

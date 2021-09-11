@@ -1,6 +1,7 @@
 import "source-map-support/register";
 
 import * as AWS from "aws-sdk";
+import * as AWSXRay from "aws-xray-sdk";
 
 import { Answers } from "../types";
 import { createLogger } from "../utils/logger";
@@ -8,7 +9,8 @@ import { createLogger } from "../utils/logger";
 const logger = createLogger("service:answers");
 
 const answersTable = process.env.ANSWERS_TABLE;
-const docClient = new AWS.DynamoDB.DocumentClient();
+const XAWS = AWSXRay.captureAWS(AWS);
+const docClient = new XAWS.DynamoDB.DocumentClient();
 
 const getAnswers = async (
   userId: string,
