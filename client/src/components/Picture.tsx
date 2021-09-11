@@ -29,10 +29,9 @@ export const Picture: React.FC<PictureProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const isUploading = useAppSelector((state) => state.answers.isUploading);
+  const placeholder = "/img/placeholder.png";
   const { src, isLoading: imageLoading } = useImage({
-    srcList: [answer?.pictureUrl, "/img/placeholder.png"].filter(
-      Boolean
-    ) as string[],
+    srcList: [answer?.pictureUrl, placeholder].filter(Boolean) as string[],
     useSuspense: false,
   });
   const [file, setFile] = useState<File>();
@@ -71,12 +70,12 @@ export const Picture: React.FC<PictureProps> = ({
         )
       ) : (
         <>
-          {isUploading || imageLoading ? (
+          {isUploading ? (
             <PictureLoading />
           ) : (
             <img
               className="picture"
-              src={src}
+              src={answer?.pictureUrl || placeholder}
               alt={answer?.value || "no image"}
             />
           )}
