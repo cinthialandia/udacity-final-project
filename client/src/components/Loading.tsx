@@ -5,7 +5,7 @@ import "./Loading.css";
 
 const Loading = () => (
   <div className="loading-container">
-    <CircularProgress />
+    <CircularProgress color="secondary" />
   </div>
 );
 

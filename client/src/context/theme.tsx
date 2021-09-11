@@ -7,10 +7,10 @@ import {
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#fca82e",
+      main: "#e678a7",
     },
     secondary: {
-      main: "#e678a7",
+      main: "#fca82e",
     },
   },
   typography: {

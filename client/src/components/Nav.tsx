@@ -6,7 +6,6 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Avatar from "@material-ui/core/Avatar";
 
 import "./Nav.css";
-
 import { useAppSelector, useAppDispatch } from "../store";
 
 const Nav = () => {

@@ -16,9 +16,9 @@ const Home: React.FC = () => {
   );
   const currentYear = useAppSelector((state) => state.date.currentYear);
   const currentAnswer = answers?.[currentYear];
-  const previousAnswers = Object.entries(answers || {}).filter(
-    ([year]) => Number(year) !== currentYear
-  );
+  const previousAnswers = Object.entries(answers || {})
+    .filter(([year]) => Number(year) !== currentYear)
+    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
 
   if (!ready) {
     return <Loading />;

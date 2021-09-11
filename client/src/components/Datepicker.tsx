@@ -34,11 +34,11 @@ const Datepicker: React.FC = () => {
   return (
     <div className="datepicker-container">
       <div className="datepicker">
-        <Button color="primary" onClick={handleClickPrev}>
+        <Button color="secondary" onClick={handleClickPrev}>
           <ArrowLeftIcon></ArrowLeftIcon>
         </Button>
         <TextField type="date" value={dateSelected} onChange={handleInput} />
-        <Button color="primary" onClick={handleClickNext}>
+        <Button color="secondary" onClick={handleClickNext}>
           <ArrowRightIcon></ArrowRightIcon>
         </Button>
       </div>
