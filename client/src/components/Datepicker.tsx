@@ -32,14 +32,16 @@ const Datepicker: React.FC = () => {
   };
 
   return (
-    <div className="date-picker-container">
-      <Button color="primary" onClick={handleClickPrev}>
-        <ArrowLeftIcon></ArrowLeftIcon>
-      </Button>
-      <TextField type="date" value={dateSelected} onChange={handleInput} />
-      <Button color="primary" onClick={handleClickNext}>
-        <ArrowRightIcon></ArrowRightIcon>
-      </Button>
+    <div className="datepicker-container">
+      <div className="datepicker">
+        <Button color="primary" onClick={handleClickPrev}>
+          <ArrowLeftIcon></ArrowLeftIcon>
+        </Button>
+        <TextField type="date" value={dateSelected} onChange={handleInput} />
+        <Button color="primary" onClick={handleClickNext}>
+          <ArrowRightIcon></ArrowRightIcon>
+        </Button>
+      </div>
     </div>
   );
 };

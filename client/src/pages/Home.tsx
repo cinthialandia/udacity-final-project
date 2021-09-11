@@ -31,23 +31,26 @@ const Home: React.FC = () => {
         <Datepicker />
       </header>
 
-      <h1 className="question">{t(questionId)}</h1>
+      <h1 className="home-title home-question">{t(questionId)}</h1>
 
-      {isLoading && <Loading />}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <main className="main-container">
+          <CurrentAnswer questionId={questionId} answer={currentAnswer} />
 
-      {!isLoading && (
-        <CurrentAnswer questionId={questionId} answer={currentAnswer} />
+          <h3 className="home-title">Previous Answers</h3>
+
+          {previousAnswers.map(([year, answer]) => (
+            <Answer
+              key={year}
+              year={Number(year)}
+              questionId={questionId}
+              answer={answer}
+            />
+          ))}
+        </main>
       )}
-
-      {!isLoading &&
-        previousAnswers.map(([year, answer]) => (
-          <Answer
-            key={year}
-            year={Number(year)}
-            questionId={questionId}
-            answer={answer}
-          />
-        ))}
     </>
   );
 };

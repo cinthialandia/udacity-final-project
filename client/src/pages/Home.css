@@ -5,8 +5,15 @@
   padding: 20px;
 }
 
-.question {
+.main-container {
+  padding-bottom: 20px;
+}
+
+.home-title {
   text-align: center;
+}
+
+.home-question {
   word-wrap: break-word;
   padding: 20px;
 }
@@ -23,7 +30,7 @@
     margin-bottom: 20px;
   }
 
-  .question {
+  .home-question {
     padding: 0 20px;
     margin: 0;
   }
