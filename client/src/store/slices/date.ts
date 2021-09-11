@@ -7,7 +7,7 @@ import { AnswersActions } from "./answers";
 
 /** INITIAL STATE */
 /** ------------ */
-type DateState = {
+export type DateState = {
   dateSelected: string;
   currentYear: number;
 };

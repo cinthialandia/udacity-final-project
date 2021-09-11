@@ -13,17 +13,30 @@
   gap: 20px;
 }
 
+.current-answer-entry--editing {
+  align-items: flex-start;
+}
+
+.current-answer-entry--editing .current-answer-year {
+  padding-top: 5px;
+}
+
 .current-answer-year {
   font-size: large;
   font-weight: bolder;
   color: #fca82e;
 }
 
-.current-answer-value {
+.current-answer-value-container {
   font-size: x-large;
   flex: 1;
   border-bottom: 2px solid #f0f0f0;
   padding-bottom: 5px;
+  display: flex;
+}
+
+.current-answer-value {
+  flex: 1;
 }
 
 .current-answer-image {
@@ -31,8 +44,13 @@
   padding-left: 55px;
 }
 
+.current-answer-form {
+  flex: 1;
+}
+
 @media only screen and (max-width: 800px) {
   .current-answer-container {
     width: 90%;
+    margin-top: 30px;
   }
 }
