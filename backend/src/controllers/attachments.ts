@@ -3,6 +3,7 @@ import "source-map-support/register";
 import { Answers } from "../types";
 import { AnswersDB } from "../services/answers";
 import { AttachmentsS3 } from "../services/attachment";
+import { getPictureUrl } from "../utils/attachments";
 import { createLogger } from "../utils/logger";
 
 const logger = createLogger("controller:answers");
@@ -28,11 +29,13 @@ export const generateAttachmentUrl = async (
       };
     }
 
-    const pictureUrl = await AttachmentsS3.getAttachmentPresignedUrl(
+    const presignedBucketUrl = await AttachmentsS3.getAttachmentPresignedUrl({
       userId,
       questionId,
-      year
-    );
+      year,
+    });
+
+    const pictureUrl = getPictureUrl({ userId, questionId, year });
 
     const resultedAnswers: Answers = {
       ...currentAnswers,
@@ -54,13 +57,13 @@ export const generateAttachmentUrl = async (
 
     logger.info(
       `Generated attachment url for answer year ${year} of question ${questionId} and user ${userId}`,
-      pictureUrl
+      presignedBucketUrl
     );
 
     return {
       statusCode: 201,
       body: JSON.stringify({
-        url: pictureUrl,
+        url: presignedBucketUrl,
       }),
     };
   } catch (error) {

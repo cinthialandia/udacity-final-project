@@ -1,15 +1,15 @@
+export type AnswerEntry = {
+  value: string;
+  pictureUrl?: string;
+};
+
 export interface Answers {
   userId: string;
   questionId: string;
   answers: {
-    [year: string]: {
-      value: string;
-      pictureUrl?: string;
-    };
+    [year: string]: AnswerEntry;
   };
 }
-
-export type AnswerEntry = Answers["answers"][string];
 
 export interface CreatingAnswer {
   answer: {

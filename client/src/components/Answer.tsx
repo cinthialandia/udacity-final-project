@@ -1,4 +1,7 @@
 import React from "react";
+
+import "./Answer.css";
+import { Picture } from "../components/Picture";
 import { AnswerEntry } from "../types";
 
 interface AnswerProps {
@@ -8,9 +11,15 @@ interface AnswerProps {
 }
 
 const Answer: React.FC<AnswerProps> = ({ year, answer }) => (
-  <div>
-    <span>{year}: </span>
-    <span>{answer.value}</span>
+  <div className="answer-container">
+    <div className="answer-entry">
+      <span className="answer-year">{year}</span>
+      <span className="answer-value">{answer.value}</span>
+    </div>
+
+    <div className="answer-image">
+      <Picture answer={answer} />
+    </div>
   </div>
 );
 

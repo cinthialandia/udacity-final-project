@@ -39,7 +39,9 @@ const Home: React.FC = () => {
         <main className="main-container">
           <CurrentAnswer questionId={questionId} answer={currentAnswer} />
 
-          <h3 className="home-title">Previous Answers</h3>
+          <h3 className="home-title">
+            {previousAnswers.length === 0 && "No"} Previous Answers
+          </h3>
 
           {previousAnswers.map(([year, answer]) => (
             <Answer

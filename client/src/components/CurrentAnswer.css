@@ -1,0 +1,38 @@
+.current-answer-container {
+  width: 60%;
+  margin: 0 auto;
+  position: relative;
+  left: -15px;
+  right: -15px;
+  padding: 15px 10px;
+}
+
+.current-answer-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.current-answer-year {
+  font-size: large;
+  font-weight: bolder;
+  color: #fca82e;
+}
+
+.current-answer-value {
+  font-size: x-large;
+  flex: 1;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 5px;
+}
+
+.current-answer-image {
+  padding: 15px;
+  padding-left: 55px;
+}
+
+@media only screen and (max-width: 800px) {
+  .current-answer-container {
+    width: 90%;
+  }
+}

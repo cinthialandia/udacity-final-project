@@ -1,0 +1,16 @@
+.picture-container {
+  display: flex;
+  justify-content: center;
+}
+
+.picture-loading {
+  width: 150px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+}
+
+.picture {
+  max-height: 200px;
+  max-width: 90%;
+}

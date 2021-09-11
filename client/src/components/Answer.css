@@ -1,0 +1,35 @@
+.answer-container {
+  width: 60%;
+  margin: 0 auto;
+  padding: 15px 10px;
+}
+
+.answer-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.answer-year {
+  font-size: small;
+  font-weight: bolder;
+  color: #fca82e;
+}
+
+.answer-value {
+  font-size: x-large;
+  flex: 1;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 5px;
+}
+
+.answer-image {
+  padding: 15px;
+  padding-left: 45px;
+}
+
+@media only screen and (max-width: 800px) {
+  .answer-container {
+    width: 90%;
+  }
+}
