@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "group",
+  "type": "object",
+  "properties": {
+    "year": {
+      "type": "number"
+    },
+    "questionId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!s*$).+"
+    },
+    "answer": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!s*$).+"
+        }
+      }
+    }
+  },
+  "required": ["year", "questionId", "answer"],
+  "additionalProperties": false
+}

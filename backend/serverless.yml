@@ -67,6 +67,9 @@ functions:
           path: answers
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/create-answer.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -84,6 +87,9 @@ functions:
           path: answers/{questionId}
           cors: true
           authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/update-answer.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
