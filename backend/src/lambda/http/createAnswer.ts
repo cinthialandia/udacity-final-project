@@ -4,9 +4,9 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import * as middy from "middy";
 import { cors } from "middy/middlewares";
 
-import { getUserId } from "../../utils/getUserId";
-import { createAnswer } from "../../controllers/answers";
 import { CreatingAnswer } from "../../types";
+import { createAnswer } from "../../controllers/answers";
+import { getUserId } from "../../utils/lambda";
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {

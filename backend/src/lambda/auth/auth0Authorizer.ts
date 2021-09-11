@@ -4,9 +4,8 @@ import { CustomAuthorizerEvent, CustomAuthorizerResult } from "aws-lambda";
 import { decode } from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
 
+import { Jwt, JwtPayload } from "../../types";
 import { createLogger } from "../../utils/logger";
-import { Jwt } from "../../auth/Jwt";
-import { JwtPayload } from "../../auth/JwtPayload";
 
 const logger = createLogger("auth");
 

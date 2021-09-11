@@ -1,16 +1,19 @@
+import "source-map-support/register";
+
 import * as AWS from "aws-sdk";
 
-import { Answers as IAnswers } from "../types";
+import { Answers } from "../types";
 import { createLogger } from "../utils/logger";
 
-const logger = createLogger("data:answers");
+const logger = createLogger("service:answers");
+
 const answersTable = process.env.ANSWERS_TABLE;
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 const getAnswers = async (
   userId: string,
   questionId: string
-): Promise<IAnswers | undefined> => {
+): Promise<Answers | undefined> => {
   logger.info(`Getting answers for user ${userId} and question: ${questionId}`);
 
   const result = await docClient
@@ -28,10 +31,10 @@ const getAnswers = async (
   }),
     result;
 
-  return result.Item as IAnswers;
+  return result.Item as Answers;
 };
 
-const createAnswers = async (newAnswers: IAnswers): Promise<void> => {
+const createAnswers = async (newAnswers: Answers): Promise<void> => {
   logger.info(
     `Creating answers for question ${newAnswers.questionId} and user ${newAnswers.userId}`
   );
@@ -48,7 +51,7 @@ const createAnswers = async (newAnswers: IAnswers): Promise<void> => {
   );
 };
 
-const updateAnswers = async (updatedAnswers: IAnswers): Promise<void> => {
+const updateAnswers = async (updatedAnswers: Answers): Promise<void> => {
   logger.info(
     `Updating answers for question ${updatedAnswers.questionId} and user ${updatedAnswers.userId}`,
     updatedAnswers
@@ -75,7 +78,7 @@ const updateAnswers = async (updatedAnswers: IAnswers): Promise<void> => {
   );
 };
 
-export const Answers = {
+export const AnswersDB = {
   get: getAnswers,
   create: createAnswers,
   update: updateAnswers,
