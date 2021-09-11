@@ -2,6 +2,7 @@ import "source-map-support/register";
 
 import * as AWS from "aws-sdk";
 
+import { getBucketId } from "../utils/attachments";
 import { createLogger } from "../utils/logger";
 
 const logger = createLogger("service:attachment");
@@ -19,7 +20,7 @@ const getAttachmentPresignedUrl = async (
 ): Promise<string> => {
   const params = {
     Bucket: s3Bucket,
-    Key: `${userId}-${questionId}-${year}`,
+    Key: getBucketId({ userId, questionId, year }),
     Expires: Number(s3UrlExpiration),
   };
 
@@ -30,10 +31,14 @@ const getAttachmentPresignedUrl = async (
   return signedUrl;
 };
 
-const deleteAttachmentObject = async (pictureUrl: string) => {
+const deleteAttachmentObject = async (
+  userId: string,
+  questionId: string,
+  year: string
+) => {
   const params = {
     Bucket: s3Bucket,
-    Key: pictureUrl,
+    Key: getBucketId({ userId, questionId, year }),
   };
 
   logger.info("Deleting S3 object", params);

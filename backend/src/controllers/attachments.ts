@@ -103,7 +103,7 @@ export const deleteAttacment = async (
     const { pictureUrl } = resultedAnsers.answers[year];
 
     if (pictureUrl) {
-      await AttachmentsS3.deleteAttachmentObject(pictureUrl);
+      await AttachmentsS3.deleteAttachmentObject(userId, questionId, year);
 
       delete resultedAnsers.answers[year]?.pictureUrl;
 
